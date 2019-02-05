@@ -164,7 +164,7 @@ namespace Pic10b{
             if ( new_capacity <= 2 * the_capacity )
                 new_capacity = 2 * the_capacity;
 
-            double* old_location = the_data;
+            T* old_location = the_data;
 
             the_data = new T[new_capacity];
             the_capacity = new_capacity;
