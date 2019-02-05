@@ -191,7 +191,7 @@ std::ostream& operator<<( std::ostream& out, const Pic10b::vector<T>& v ){
 template<typename T>
 T operator*(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
 	int min_sz = lhs.size() < rhs.size() ? lhs.size() : rhs.size();
-	T result;
+	T result = T();
 	for (size_t i = 0; i < min_sz; ++i) {
 		result += (lhs[i] * rhs[i]);
 	}
