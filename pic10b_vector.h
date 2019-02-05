@@ -228,6 +228,39 @@ Pic10b::vector<T>& operator+=(Pic10b::vector<T>& lhs, const Pic10b::vector<T>& r
 }
 
 template<typename T>
+bool operator<(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return (lhs * lhs) < (rhs * rhs);
+}
+
+template<typename T>
+bool operator<=(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return !(rhs < lhs);
+}
+
+template<typename T>
+bool operator>(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return rhs < lhs;
+}
+
+template<typename T>
+bool operator>=(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return !(lhs < rhs);
+}
+
+template<typename T>
+bool operator==(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return (!(lhs < rhs)) && (!(rhs < lhs));
+}
+
+template<typename T>
+bool operator!=(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return (lhs < rhs) || (rhs < lhs);
+}
+
+template<typename T>
+bool operator
+
+template<typename T>
 void print_vector( const Pic10b::vector<T>& v ){
     if ( v.empty() )
         std::cout << "Vector is empty\n";
