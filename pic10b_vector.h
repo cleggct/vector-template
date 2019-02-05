@@ -30,7 +30,7 @@ namespace Pic10b{
         T& operator[]( size_t index );
         T operator[]( size_t index ) const; 
 		vector<T>& operator+=(const vector<T>& rhs); //add operator+= as a member function
-		vector<T> operator*(const T& rhs); //also add one of the operator* as a member function
+		vector<T>& operator*=(const T& rhs); //also add operator*= as a member function
         void dump_data_to( std::ostream& out ) const;
         void dump_data() const;
         void push_back( T new_value ); //now use generic T for new values
@@ -146,17 +146,17 @@ namespace Pic10b{
 	}
 
 	/**
-	Generic * which takes an object of type T and multiplies each value
+	Generic *= which takes an object of type T and multiplies each value
 	in this vector by T
 	*/
 	template<typename T>
-	vector<T> vector<T>::operator*(const T& rhs) {
+	vector<T>& vector<T>::operator*=(const T& rhs) {
 		for (size_t i = 0; i < the_size; ++i) { //iterate over the vector
 			the_data[i] = the_data[i] * rhs; //multiply the element by T
 								   //the right hand side of the expression is written this way in order to get the
 								   //behavior we want when multiplying a string and a vector<string>
 		}
-		return this;
+		return *this;
 	}
 
 	template<typename T>
@@ -278,17 +278,31 @@ T operator*(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
 }
 
 /**
+Generic * which takes a vector of T on the left and an object of type T on the right,
+multiplies each value of the vector by T
+*/
+template<typename T>
+Pic10b::vector<T> operator*(Pic10b::vector<T> rhs, const T& lhs) {
+	/*for (size_t i = 0; i < rhs.size(); ++i) { //iterate over the vector
+	rhs[i] = lhs * rhs[i]; //multiply the element by T
+	//the right hand side of the expression is written this way in order to get the
+	//behavior we want when multiplying a string and a vector<string>
+	}*/
+	return rhs *= lhs;
+}
+
+/**
 Generic * which takes an object of type T on the left and a vector of T on the right,
 multiplies each value of the vector by T
 */
 template<typename T>
 Pic10b::vector<T> operator*(const T& lhs, Pic10b::vector<T> rhs) {
-	for (size_t i = 0; i < rhs.size(); ++i) { //iterate over the vector
+	/*for (size_t i = 0; i < rhs.size(); ++i) { //iterate over the vector
 		rhs[i] = lhs * rhs[i]; //multiply the element by T
 		//the right hand side of the expression is written this way in order to get the
 		//behavior we want when multiplying a string and a vector<string>
-	}
-	return rhs;
+	}*/
+	return rhs *= lhs;
 }
 
 /**
