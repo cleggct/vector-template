@@ -199,27 +199,27 @@ T& operator*(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
 }
 
 template<typename T>
-Pic10b::vector<T>& operator*(const T& lhs, Pic10b::vector<T> rhs) {
+Pic10b::vector<T> operator*(const T& lhs, Pic10b::vector<T> rhs) {
 	for (size_t i = 0; i < rhs.size(); ++i) {
 		rhs[i] *= lhs;
 	}
-	return *rhs;
+	return rhs;
 }
 
 template<typename T>
-Pic10b::vector<T>& operator*(Pic10b::vector<T> lhs, const T& rhs) {
+Pic10b::vector<T> operator*(Pic10b::vector<T> lhs, const T& rhs) {
 	for (size_t i = 0; i < lhs.size(); ++i) {
 		lhs[i] *= rhs;
 	}
-	return *lhs;
+	return lhs;
 }
 
 template<typename T>
-Pic10b::vector<T>& operator+(Pic10b::vector<T> lhs, const Pic10b::vector<T>& rhs) {
+Pic10b::vector<T> operator+(Pic10b::vector<T> lhs, const Pic10b::vector<T>& rhs) {
 	for (size_t i = 0; i < lhs.size(); ++i) {
 		lhs[i] += rhs[i];
 	}
-	return *lhs;
+	return lhs;
 }
 
 template<typename T>
