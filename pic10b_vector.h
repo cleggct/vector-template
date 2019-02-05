@@ -182,7 +182,6 @@ namespace Pic10b{
 
 
 /** ************************ OTHER FUNCTIONS ************************ **/
-template<typename T>
 std::ostream& operator<<(std::ostream& out, const Pic10b::vector<int>& v) {
 	out << '{';
 	for (size_t i = 0; i < v.size()-1; ++i)
@@ -191,7 +190,6 @@ std::ostream& operator<<(std::ostream& out, const Pic10b::vector<int>& v) {
 	return out;
 }
 
-template<typename T>
 std::ostream& operator<<(std::ostream& out, const Pic10b::vector<double>& v) {
 	out << '{';
 	for (size_t i = 0; i < v.size() - 1; ++i)
@@ -200,7 +198,6 @@ std::ostream& operator<<(std::ostream& out, const Pic10b::vector<double>& v) {
 	return out;
 }
 
-template<typename T>
 std::ostream& operator<<(std::ostream& out, const Pic10b::vector<std::string>& v) {
 	out << "[ ";
 	for (size_t i = 0; i < v.size() - 1; ++i)
