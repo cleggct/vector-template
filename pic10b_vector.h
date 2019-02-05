@@ -191,7 +191,7 @@ std::ostream& operator<<( std::ostream& out, const Pic10b::vector<T>& v ){
 template<typename T>
 void print_vector( const Pic10b::vector<T>& v ){
     if ( v.empty() )
-        std::cout << "Vector is empty\n";
+		std::cout << "Vector is empty\n";
     else
         std::cout << "Vector (contents): " << v << '\n' ;
 } 
