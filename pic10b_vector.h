@@ -1,4 +1,5 @@
 #include <iostream>   // std::ostream, std::cout
+#include <string>
 
 namespace Pic10b{
 
@@ -32,6 +33,7 @@ namespace Pic10b{
         void dump_data() const;
         void push_back( T new_value );
         void pop_back();
+
 
       private:
         //Other members [private]
@@ -77,7 +79,7 @@ namespace Pic10b{
             for ( int i = 0 ; i < the_size ; ++i )
                 the_data[i] = rhs.the_data[i];
         }
-		std::cout << "xxx: Copy assignment operator\n...";
+		std::cout << "xxx: Copy assignment operator...\n";
         return *this;
     }
 
@@ -163,7 +165,7 @@ namespace Pic10b{
             if ( new_capacity <= 2 * the_capacity )
                 new_capacity = 2 * the_capacity;
 
-            double* old_location = the_data;
+            T* old_location = the_data;
 
             the_data = new T[new_capacity];
             the_capacity = new_capacity;
@@ -180,13 +182,113 @@ namespace Pic10b{
 
 
 /** ************************ OTHER FUNCTIONS ************************ **/
-template<typename T>
-std::ostream& operator<<( std::ostream& out, const Pic10b::vector<T>& v ){
-    for ( size_t i = 0 ; i < v.size() ; ++i )
-        out << v[i] << ' ';
-    return out;
+std::ostream& operator<<(std::ostream& out, const Pic10b::vector<int>& v) {
+	out << '{';
+	for (size_t i = 0; i < v.size()-1; ++i)
+		out << v[i] << ", ";
+	out << v[v.size() - 1] << '}';
+	return out;
 }
 
+std::ostream& operator<<(std::ostream& out, const Pic10b::vector<double>& v) {
+	out << '{';
+	for (size_t i = 0; i < v.size() - 1; ++i)
+		out << v[i] << ", ";
+	out << v[v.size() - 1] << '}';
+	return out;
+}
+
+std::ostream& operator<<(std::ostream& out, const Pic10b::vector<std::string>& v) {
+	out << "[ ";
+	for (size_t i = 0; i < v.size() - 1; ++i)
+		out << v[i] << ", ";
+	out << v[v.size() - 1] << " ]";
+	return out;
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const Pic10b::vector<T>& v) {
+	for (size_t i = 0; i < v.size(); ++i)
+		out << v[i] << ' ';
+	return out;
+}
+
+std::string operator*(const std::string& lhs, std::string rhs) {
+	rhs = lhs + ' ' + rhs;
+	return rhs;
+}
+
+template<typename T>
+T operator*(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	int min_sz = lhs.size() < rhs.size() ? lhs.size() : rhs.size();
+	T result = T();
+	for (size_t i = 0; i < min_sz; ++i) {
+		result += (lhs[i] * rhs[i]);
+	}
+	return result;
+}
+
+template<typename T>
+Pic10b::vector<T> operator*(const T& lhs, Pic10b::vector<T> rhs) {
+	for (size_t i = 0; i < rhs.size(); ++i) {
+		rhs[i] = lhs * rhs[i];
+	}
+	return rhs;
+}
+
+template<typename T>
+Pic10b::vector<T> operator*(Pic10b::vector<T> lhs, const T& rhs) {
+	for (size_t i = 0; i < lhs.size(); ++i) {
+		lhs[i] = lhs[i] * rhs;
+	}
+	return lhs;
+}
+
+template<typename T>
+Pic10b::vector<T> operator+(Pic10b::vector<T> lhs, const Pic10b::vector<T>& rhs) {
+	for (size_t i = 0; i < lhs.size(); ++i) {
+		lhs[i] += rhs[i];
+	}
+	return lhs;
+}
+
+template<typename T>
+Pic10b::vector<T> operator+=(Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	for (size_t i = 0; i < lhs.size(); ++i) {
+		lhs[i] += rhs[i];
+	}
+	return lhs;
+}
+
+template<typename T>
+bool operator<(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return (lhs * lhs) < (rhs * rhs);
+}
+
+template<typename T>
+bool operator<=(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return !(rhs < lhs);
+}
+
+template<typename T>
+bool operator>(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return rhs < lhs;
+}
+
+template<typename T>
+bool operator>=(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return !(lhs < rhs);
+}
+
+template<typename T>
+bool operator==(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return (!(lhs < rhs)) && (!(rhs < lhs));
+}
+
+template<typename T>
+bool operator!=(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	return (lhs < rhs) || (rhs < lhs);
+}
 
 template<typename T>
 void print_vector( const Pic10b::vector<T>& v ){
