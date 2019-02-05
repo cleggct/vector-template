@@ -78,7 +78,7 @@ namespace Pic10b{
             for ( int i = 0 ; i < the_size ; ++i )
                 the_data[i] = rhs.the_data[i];
         }
-		std::cout << "xxx: Copy assignment operator\n...";
+		std::cout << "xxx: Copy assignment operator...\n";
         return *this;
     }
 
