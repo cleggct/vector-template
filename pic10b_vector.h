@@ -29,6 +29,7 @@ namespace Pic10b{
         T at( size_t index ) const;
         T& operator[]( size_t index );
         T operator[]( size_t index ) const; 
+		vector<T>& operator+=(const vector<T>& rhs); //add operator+= as a member function
         void dump_data_to( std::ostream& out ) const;
         void dump_data() const;
         void push_back( T new_value ); //now use generic T for new values
@@ -130,6 +131,18 @@ namespace Pic10b{
     T vector<T>::operator[]( size_t index ) const {
         return the_data[index];
     }
+
+	/**
+	Generic += takes a vector and modifies this vector so that its ith element
+	is summed with the ith element of the input vector
+	*/
+	template<typename T>
+	vector<T>& vector<T>::operator+=(const vector<T>& rhs) {
+		for (size_t i = 0; i < the_size; ++i) { //iterate over the vectors
+			the_data[i] += rhs[i]; //add the element from the right vector to the element from this vector
+		}
+		return *this; //return a reference to this vector
+	}
 
 	template<typename T>
     void vector<T>::dump_data_to( std::ostream& out ) const {
@@ -233,8 +246,7 @@ Overloaded * for strings so that multiplying our vector with a string would beha
 as specified, adding the strings together with a space inbetween
 */
 std::string operator*(const std::string& lhs, std::string rhs) {
-	rhs = lhs + ' ' + rhs; //add the strings with a space between them
-	return rhs;
+	return lhs + ' ' + rhs; //add the strings with a space between them
 }
 
 /**
@@ -288,18 +300,6 @@ Pic10b::vector<T> operator+(Pic10b::vector<T> lhs, const Pic10b::vector<T>& rhs)
 		lhs[i] += rhs[i]; //lhs is passed by value so it is ok to modify it
 	}
 	return lhs; //return the result
-}
-
-/**
-Generic += takes two vectors and modifies the vector on the left so that its ith element
-is summed with the ith element of the vector on the right
-*/
-template<typename T>
-Pic10b::vector<T>& operator+=(Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
-	for (size_t i = 0; i < lhs.size(); ++i) { //iterate over the vectors
-		lhs[i] += rhs[i]; //add the element from the right vector to the element from the left vector
-	}
-	return lhs; //return a reference to the left vector
 }
 
 /**
