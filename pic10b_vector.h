@@ -6,7 +6,7 @@ namespace Pic10b{
 	template <typename T>
     class vector{
       private:
-        T* the_data;
+        T* the_data; //change the type from double generic T
         size_t the_size;
         size_t the_capacity;
 
@@ -16,7 +16,7 @@ namespace Pic10b{
       public:
         // The big 4 
         vector();
-        vector( const vector<T>& );
+        vector( const vector<T>& ); //now we are taking generic vectors, not double vectors
         vector& operator=( const vector<T>& );
         ~vector();
 
@@ -24,14 +24,14 @@ namespace Pic10b{
         bool empty() const;
         size_t size() const;
         size_t capacity() const;
-        T front() const;
+        T front() const; //return types must also be changed from double to generic T
         T back() const; 
         T at( size_t index ) const;
         T& operator[]( size_t index );
         T operator[]( size_t index ) const; 
         void dump_data_to( std::ostream& out ) const;
         void dump_data() const;
-        void push_back( T new_value );
+        void push_back( T new_value ); //now use generic T for new values
         void pop_back();
 
 
@@ -46,8 +46,8 @@ namespace Pic10b{
 	template<typename T>
     vector<T>::vector() 
       : the_data(nullptr), the_size(0), the_capacity(INIT_CAP) {
-		std::cout << "xxx: Default constructor...\n";
-        the_data = new T[the_capacity];
+		std::cout << "xxx: Default constructor...\n"; //add a statement for when the default constructor is called
+        the_data = new T[the_capacity]; //use arrays of generic T instead of double
     }
 
 	template<typename T>
@@ -55,13 +55,13 @@ namespace Pic10b{
       : the_data(nullptr), the_size(source.the_size), 
         the_capacity(source.the_capacity) {
 
-        the_data = new T[the_capacity];
+        the_data = new T[the_capacity]; //array of generic T, not double
 
         // Deep copy of internal array
         for ( int i = 0 ; i < the_size ; ++i ){
             the_data[i] = source.the_data[i];
         }
-		std::cout << "xxx: Copy constructor...\n";
+		std::cout << "xxx: Copy constructor...\n"; //add a statement for when the copy constructor is called
     }
 
 	template<typename T>
@@ -79,14 +79,14 @@ namespace Pic10b{
             for ( int i = 0 ; i < the_size ; ++i )
                 the_data[i] = rhs.the_data[i];
         }
-		std::cout << "xxx: Copy assignment operator...\n";
+		std::cout << "xxx: Copy assignment operator...\n"; //add a statement for when the copy assignment operator is called
         return *this;
     }
 
 	template<typename T>
     vector<T>::~vector(){
         delete[] the_data;
-		std::cout << "xxx: Destructor...\n";
+		std::cout << "xxx: Destructor...\n"; //add a statement for when the destructor is called
     }
 
     /** *********************** OTHER MEMBERS *********************** **/
@@ -167,7 +167,7 @@ namespace Pic10b{
 
             T* old_location = the_data;
 
-            the_data = new T[new_capacity];
+            the_data = new T[new_capacity]; //now we are using arrays of generic T, not double
             the_capacity = new_capacity;
 
             for ( size_t i = 0 ; i < the_size ; ++i )
@@ -182,114 +182,184 @@ namespace Pic10b{
 
 
 /** ************************ OTHER FUNCTIONS ************************ **/
+
+/**
+Overloaded output function for when our vector is of type int
+*/
 std::ostream& operator<<(std::ostream& out, const Pic10b::vector<int>& v) {
-	out << '{';
-	for (size_t i = 0; i < v.size()-1; ++i)
-		out << v[i] << ", ";
+	out << '{'; //as we are dealing with numbers, we add braces...
+	for (size_t i = 0; i < v.size()-1; ++i) //iterate over all the elements in the vector
+		out << v[i] << ", "; //... and commas
 	out << v[v.size() - 1] << '}';
 	return out;
 }
 
+/**
+Overloaded output function for when our vector is of type double
+*/
 std::ostream& operator<<(std::ostream& out, const Pic10b::vector<double>& v) {
-	out << '{';
-	for (size_t i = 0; i < v.size() - 1; ++i)
-		out << v[i] << ", ";
+	out << '{'; //as we are dealing with numbers, we add braces...
+	for (size_t i = 0; i < v.size() - 1; ++i) //iterate over all the elements in the vector
+		out << v[i] << ", "; //... and commas
 	out << v[v.size() - 1] << '}';
 	return out;
 }
 
+/**
+Overloaded output function for when our vector is of type string
+*/
 std::ostream& operator<<(std::ostream& out, const Pic10b::vector<std::string>& v) {
-	out << "[ ";
-	for (size_t i = 0; i < v.size() - 1; ++i)
+	out << "[ "; //now we want to use brackets as we are dealing with strings
+	for (size_t i = 0; i < v.size() - 1; ++i) //iterate over all the elements in the vector
 		out << v[i] << ", ";
 	out << v[v.size() - 1] << " ]";
 	return out;
 }
 
+
+/**
+Generic output function for our vector, iterates over all the elements and prints them
+separated with spaces
+*/
 template<typename T>
 std::ostream& operator<<(std::ostream& out, const Pic10b::vector<T>& v) {
-	for (size_t i = 0; i < v.size(); ++i)
-		out << v[i] << ' ';
+	for (size_t i = 0; i < v.size(); ++i) //iterate over the elements
+		out << v[i] << ' '; //print the element followed by a space
 	return out;
 }
 
+/**
+Overloaded * for strings so that multiplying our vector with a string would behave
+as specified, adding the strings together with a space inbetween
+*/
 std::string operator*(const std::string& lhs, std::string rhs) {
-	rhs = lhs + ' ' + rhs;
+	rhs = lhs + ' ' + rhs; //add the strings with a space between them
 	return rhs;
 }
 
+/**
+Generic * which takes two vectors and outputs their dot product
+*/
 template<typename T>
 T operator*(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
-	int min_sz = lhs.size() < rhs.size() ? lhs.size() : rhs.size();
+	int min_sz = lhs.size() < rhs.size() ? lhs.size() : rhs.size(); //get the minimum of the sizes of the vectors
 	T result = T();
-	for (size_t i = 0; i < min_sz; ++i) {
-		result += (lhs[i] * rhs[i]);
+	for (size_t i = 0; i < min_sz; ++i) { //iterate over the values in the vectors
+		result += (lhs[i] * rhs[i]); //multiply the individual values and sum them
 	}
 	return result;
 }
 
+/**
+Generic * which takes an object of type T on the left and a vector of T on the right,
+multiplies each value of the vector by T
+*/
 template<typename T>
 Pic10b::vector<T> operator*(const T& lhs, Pic10b::vector<T> rhs) {
-	for (size_t i = 0; i < rhs.size(); ++i) {
-		rhs[i] = lhs * rhs[i];
+	for (size_t i = 0; i < rhs.size(); ++i) { //iterate over the vector
+		rhs[i] = lhs * rhs[i]; //multiply the element by T
+		//the right hand side of the expression is written this way in order to get the
+		//behavior we want when multiplying a string and a vector<string>
 	}
 	return rhs;
 }
 
+/**
+Generic * which takes a vector of T on the left and an object of type T on the right,
+mutliplies each value of the vector by T
+*/
 template<typename T>
 Pic10b::vector<T> operator*(Pic10b::vector<T> lhs, const T& rhs) {
-	for (size_t i = 0; i < lhs.size(); ++i) {
-		lhs[i] = lhs[i] * rhs;
+	for (size_t i = 0; i < lhs.size(); ++i) { //iterate over the vector
+		lhs[i] = lhs[i] * rhs; //multiply the element by T
+		//the right hand side of the expression is written this way in order to get the
+		//behavior we want when multiplying a string and a vector<string>
 	}
 	return lhs;
 }
 
+/**
+Generic + which takes two vectors and returns a vector whose ith element is the sum
+of the ith elements of the input vectors
+*/
 template<typename T>
 Pic10b::vector<T> operator+(Pic10b::vector<T> lhs, const Pic10b::vector<T>& rhs) {
-	for (size_t i = 0; i < lhs.size(); ++i) {
-		lhs[i] += rhs[i];
+	for (size_t i = 0; i < lhs.size(); ++i) { //iterate over the vectors
+		lhs[i] += rhs[i]; //lhs is passed by value so it is ok to modify it
 	}
-	return lhs;
+	return lhs; //return the result
 }
 
+/**
+Generic += takes two vectors and modifies the vector on the left so that its ith element
+is summed with the ith element of the vector on the right
+*/
 template<typename T>
-Pic10b::vector<T> operator+=(Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
-	for (size_t i = 0; i < lhs.size(); ++i) {
-		lhs[i] += rhs[i];
+Pic10b::vector<T>& operator+=(Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
+	for (size_t i = 0; i < lhs.size(); ++i) { //iterate over the vectors
+		lhs[i] += rhs[i]; //add the element from the right vector to the element from the left vector
 	}
-	return lhs;
+	return lhs; //return a reference to the left vector
 }
 
+/**
+Generic < comparison operator, takes two vectors and returns true if 
+the magnitude of the left vector is less than the magnitude of the right vector
+*/
 template<typename T>
 bool operator<(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
-	return (lhs * lhs) < (rhs * rhs);
+	return (lhs * lhs) < (rhs * rhs); //compare the magnitudes
 }
 
+/**
+Generic <= comparison operator, takes two vectors and returns true if the left
+vector is less than or equal to the right
+*/
 template<typename T>
 bool operator<=(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
-	return !(rhs < lhs);
+	return !(rhs < lhs); //lhs <= rhs == !(rhs < lhs)
 }
 
+/**
+Generic > comparison operator, takes two vectors and returns true if the left
+vector is greater than the right vector
+*/
 template<typename T>
 bool operator>(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
-	return rhs < lhs;
+	return rhs < lhs; //lhs > rhs == rhs < lhs
 }
 
+/**
+Generic >= operator, takes two vectors and returns true if the left vector
+is greater than or equal to the right vector
+*/
 template<typename T>
 bool operator>=(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
-	return !(lhs < rhs);
+	return !(lhs < rhs); //lhs >= rhs == !(lhs < rhs)
 }
 
+/**
+Generic == operator, takes two vectors and returns true if they are equal
+*/
 template<typename T>
 bool operator==(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
-	return (!(lhs < rhs)) && (!(rhs < lhs));
+	return (!(lhs < rhs)) && (!(rhs < lhs)); //if the left is not less than the right and
+											 //the right is not less than the left, then
+											 //they must be equal
 }
 
+/**
+Generic != operator, takes two vectors and returns true if they are not equal
+*/
 template<typename T>
 bool operator!=(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
-	return (lhs < rhs) || (rhs < lhs);
+	return (lhs < rhs) || (rhs < lhs); //they are not equal if lhs < rhs or rhs < lhs
 }
 
+/**
+Generic function for printing the contents of a vector, takes a vector
+and prints each element
+*/
 template<typename T>
 void print_vector( const Pic10b::vector<T>& v ){
     if ( v.empty() )
