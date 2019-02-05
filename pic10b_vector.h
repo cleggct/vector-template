@@ -203,7 +203,7 @@ Pic10b::vector<T>& operator*(const T& lhs, Pic10b::vector<T> rhs) {
 	for (size_t i = 0; i < rhs.size(); ++i) {
 		rhs[i] *= lhs;
 	}
-	&return rhs;
+	return &rhs;
 }
 
 template<typename T>
