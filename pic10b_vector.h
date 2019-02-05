@@ -33,7 +33,6 @@ namespace Pic10b{
         void push_back( T new_value );
         void pop_back();
 
-		friend T operator*(const vector<T> lhs, const vector<T> rhs);
 
       private:
         //Other members [private]
@@ -190,13 +189,27 @@ std::ostream& operator<<( std::ostream& out, const Pic10b::vector<T>& v ){
 }
 
 template<typename T>
-T operator*(Pic10b::vector<T> lhs, Pic10b::vector<T> rhs) {
-	int min_sz = lhs.size < rhs.size ? lhs.size : rhs.size;
+T operator*(const Pic10b::vector<T> lhs, const Pic10b::vector<T> rhs) {
+	int min_sz = lhs.size() < rhs.size() ? lhs.size() : rhs.size();
 	T result;
 	for (size_t i = 0; i < min_sz; ++i) {
 		result += (lhs[i] * rhs[i]);
 	}
 	return result;
+}
+
+template<typename T>
+Pic10b::vector<T> operator*(const T lhs, const Pic10b::vector<T> rhs) {
+	Pic10b::vector<T> result = rhs;
+	for (size_t i = 0; i < rhs.size(); ++i) {
+		rhs[i] *= T;
+	}
+	return result;
+}
+
+template<typename T>
+Pic10b::vector<T> operator*(const Pic10b::vector<T> lhs, const T rhs) {
+	return rhs * lhs;
 }
 
 template<typename T>
