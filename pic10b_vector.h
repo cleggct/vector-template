@@ -223,14 +223,14 @@ T operator*(const Pic10b::vector<T>& lhs, const Pic10b::vector<T>& rhs) {
 	return result;
 }
 
-Pic10b::vector<string> operator*(const std::string& lhs, Pic10b::vector<std::string> rhs) {
+Pic10b::vector<std::string> operator*(const std::string& lhs, Pic10b::vector<std::string> rhs) {
 	for (size_t i = 0; i < rhs.size(); ++i) {
 		rhs[i] = lhs + ' ' + rhs[i];
 	}
 	return rhs;
 }
 
-Pic10b::vector<string> operator*(Pic10b::vector<std::string> lhs, const std::string& rhs) {
+Pic10b::vector<std::string> operator*(Pic10b::vector<std::string> lhs, const std::string& rhs) {
 	for (size_t i = 0; i < lhs.size(); ++i) {
 		lhs[i] += rhs;
 	}
