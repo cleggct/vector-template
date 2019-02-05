@@ -1,4 +1,5 @@
 #include <iostream>   // std::ostream, std::cout
+#include <string>
 
 namespace Pic10b{
 
@@ -182,10 +183,37 @@ namespace Pic10b{
 
 /** ************************ OTHER FUNCTIONS ************************ **/
 template<typename T>
-std::ostream& operator<<( std::ostream& out, const Pic10b::vector<T>& v ){
-    for ( size_t i = 0 ; i < v.size() ; ++i )
-        out << v[i] << ' ';
-    return out;
+std::ostream& operator<<(std::ostream& out, const Pic10b::vector<int>& v) {
+	out << '{';
+	for (size_t i = 0; i < v.size()-1; ++i)
+		out << v[i] << ", ";
+	out << v[v.size() - 1] << '}';
+	return out;
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const Pic10b::vector<double>& v) {
+	out << '{';
+	for (size_t i = 0; i < v.size() - 1; ++i)
+		out << v[i] << ", ";
+	out << v[v.size() - 1] << '}';
+	return out;
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const Pic10b::vector<std::string>& v) {
+	out << "[ ";
+	for (size_t i = 0; i < v.size() - 1; ++i)
+		out << v[i] << ", ";
+	out << v[v.size() - 1] << " ]";
+	return out;
+}
+
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const Pic10b::vector<T>& v) {
+	for (size_t i = 0; i < v.size(); ++i)
+		out << v[i] << ' ';
+	return out;
 }
 
 template<typename T>
