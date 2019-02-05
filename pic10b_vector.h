@@ -30,6 +30,7 @@ namespace Pic10b{
         T& operator[]( size_t index );
         T operator[]( size_t index ) const; 
 		vector<T>& operator+=(const vector<T>& rhs); //add operator+= as a member function
+		vector<T> operator*(const T& rhs); //also add one of the operator* as a member function
         void dump_data_to( std::ostream& out ) const;
         void dump_data() const;
         void push_back( T new_value ); //now use generic T for new values
@@ -142,6 +143,20 @@ namespace Pic10b{
 			the_data[i] += rhs[i]; //add the element from the right vector to the element from this vector
 		}
 		return *this; //return a reference to this vector
+	}
+
+	/**
+	Generic * which takes an object of type T and multiplies each value
+	in this vector by T
+	*/
+	template<typename T>
+	vector<T> vector<T>::operator*(const T& rhs) {
+		for (size_t i = 0; i < the_size; ++i) { //iterate over the vector
+			the_data[i] = the_data[i] * rhs; //multiply the element by T
+								   //the right hand side of the expression is written this way in order to get the
+								   //behavior we want when multiplying a string and a vector<string>
+		}
+		return this;
 	}
 
 	template<typename T>
@@ -277,29 +292,12 @@ Pic10b::vector<T> operator*(const T& lhs, Pic10b::vector<T> rhs) {
 }
 
 /**
-Generic * which takes a vector of T on the left and an object of type T on the right,
-mutliplies each value of the vector by T
-*/
-template<typename T>
-Pic10b::vector<T> operator*(Pic10b::vector<T> lhs, const T& rhs) {
-	for (size_t i = 0; i < lhs.size(); ++i) { //iterate over the vector
-		lhs[i] = lhs[i] * rhs; //multiply the element by T
-		//the right hand side of the expression is written this way in order to get the
-		//behavior we want when multiplying a string and a vector<string>
-	}
-	return lhs;
-}
-
-/**
 Generic + which takes two vectors and returns a vector whose ith element is the sum
 of the ith elements of the input vectors
 */
 template<typename T>
 Pic10b::vector<T> operator+(Pic10b::vector<T> lhs, const Pic10b::vector<T>& rhs) {
-	for (size_t i = 0; i < lhs.size(); ++i) { //iterate over the vectors
-		lhs[i] += rhs[i]; //lhs is passed by value so it is ok to modify it
-	}
-	return lhs; //return the result
+	return lhs += rhs; //return the sum of the vectors
 }
 
 /**
