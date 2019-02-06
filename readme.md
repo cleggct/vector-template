@@ -10,5 +10,5 @@ Once these were working, I defined the logical operators. I started with the les
 operators in terms of that one. These operators did not give me too much trouble. Then I went on to writing a few different
 versions of operator<<; one for ints, one for doubles, and one for strings. Once those were working, I dealt with the
 requirements we were given for multiplication of vectors with strings. My solution was to write an operator* for strings, then
-rewrite parts of my operator* to give the correct output in the case of strings. In order to do this, I changed from using *=
-to * so that the operator* I had defined for strings would be used when dealing with strings.
+rewrite parts of my operator* to give the correct output in the case of strings. In order to do this, I changed from using * =
+to * so that the operator* I had defined for strings would be used when dealing with strings. After this, there were a few more bugs to fix, but then my program appeared to be producing the correct outputs wtih the driver files.
